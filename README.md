@@ -8,3 +8,12 @@ Apiviews: describe logic to make api endpoint
 
 - processing files and rendering a synchronous response
 - calling other api services
+
+- seriealizer : helps convert object to readable format
+
+
+# ViewSet 
+- CRUD openration on Database, 
+- a quick simple API, 
+- little to no customization on the login, 
+- working with standard data structure

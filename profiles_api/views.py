@@ -5,8 +5,15 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import viewsets
 from profiles_api import serializer
-
-
+from profiles_api import models
+from rest_framework.authentication import TokenAuthentication
+from . import permissions
+from rest_framework import filters
+from rest_framework.authtoken.views import ObtainAuthToken
+from rest_framework.settings import api_settings
+from rest_framework.permissions import IsAuthenticated
+# decorator for function
+# @api_view['get','post']
 class HElloAPIView(APIView):
     """Test API View"""
     serializer_class=serializer.HelloSerializer
@@ -42,6 +49,8 @@ class HElloAPIView(APIView):
     def delete(self,request,pk=None):
         """delete an object"""
         return Response({'method':'DELETE'})
+
+
 
 
 class HelloViewSet(viewsets.ViewSet):
@@ -88,10 +97,42 @@ class HelloViewSet(viewsets.ViewSet):
     def destroy(self,request,pk=None):
         """Handle removing the object"""
         return Response({'http_method':'Delete'})
-    
 
     
         
+
+class UserProfileViewSet(viewsets.ModelViewSet):
+    """Handle creating and updating profiles"""
+    serializer_class= serializer.UserProfileSerializer
+    queryset= models.UserProfile.objects.all()
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (permissions.UpdateOwnProfile, )
+    filter_backends = (filters.SearchFilter, )
+    search_fields=('name','email')
+
+
+class UserLoginApiView(ObtainAuthToken):
+    """Handle creating user authentication token"""
+    renderer_classes = api_settings.DEFAULT_RENDERER_CLASSES
+
+
+class ProfileItemfeedViewSet(viewsets.ModelViewSet):
+    """Handles creating, reading and updating profile feed items"""
+    authentication_classes= (TokenAuthentication,)
+    serializer_class=serializer.ProfileFeedItemsSerializer
+    queryset=models.ProfileFeedItem.objects.all()
+    permission_classes=(
+        permissions.UpdateOwnStatus,
+        IsAuthenticated
+    )
+  
+#   http post every time perform this function
+    def perform_create(self,serializer):
+        """Sets the user profile to the logged in user"""
+        serializer.save(user_profile=self.request.user)
+
+
+
 
     
 

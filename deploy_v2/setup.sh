@@ -5,7 +5,7 @@ set -e
 # TODO: Set to URL of git repo.
 PROJECT_GIT_URL='https://github.com/psrawat23/django-rest-api.git'
 
-PROJECT_BASE_PATH='/usr/local/apps/RESTApi'
+PROJECT_BASE_PATH='/usr/local/apps'
 VIRTUALENV_BASE_PATH='/usr/local/virtualenvs'
 
 # Set Ubuntu Language
@@ -22,7 +22,7 @@ git clone $PROJECT_GIT_URL $PROJECT_BASE_PATH/RESTApi
 mkdir -p $VIRTUALENV_BASE_PATH
 python3 -m venv $VIRTUALENV_BASE_PATH/profiles_api
 
-$VIRTUALENV_BASE_PATH/profiles_api/bin/pip install -r $PROJECT_BASE_PATH/requirements.txt
+$VIRTUALENV_BASE_PATH/profiles_api/bin/pip install -r $PROJECT_BASE_PATH/RESTApi/requirements.txt
 
 # Run migrations
 cd $PROJECT_BASE_PATH/RESTApi/src
